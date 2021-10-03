@@ -1,0 +1,64 @@
+<div class="body-container">
+    <form #formData="ngForm" class="change-pw-form" novalidate [formGroup]="addUserForm" (ngSubmit)="onSubmit(addUserForm)">
+       <div class="flex-row">
+            <mat-form-field class="item">
+                <input #email 
+                matInput
+                placeholder="Email"
+                autocomplete="off"
+                formControlName = "email"
+                autofocus
+                />
+               <mat-error>Email is not in correct format.</mat-error>
+               <mat-hint>Enter email of user.</mat-hint>
+            </mat-form-field>          
+        </div>
+        <div class="flex-row" *ngIf="!userId">
+            <mat-form-field class="item">
+                <input   
+                matInput                
+                placeholder="Password"
+                autocomplete="off"
+                formControlName = "password"
+                [type]="hidePassword ? 'password' : 'text'"
+                (blur)="hidePassword= true"
+                />
+                <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{
+                hidePassword? 'visibility' : 'visibility_off'    
+                }}</mat-icon>
+                <mat-error>Password length is not valid (6 to 15).</mat-error>
+                <mat-hint>Enter password.</mat-hint>
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <mat-form-field class="item">
+                <mat-label>Role</mat-label>
+                <mat-select formControlName="roleId">
+                    <mat-option  *ngFor="let role of roleList"
+                        [value]="role.id">
+                        {{role.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <mat-form-field class="item">
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="status">
+                    <mat-option *ngFor="let status of statusList"
+                        [value]="status.id">
+                        {{status.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div style="display: flex;">
+            <div class="item">
+                <button mat-raised-button color="primary" style="width: 100px;">
+                Save
+                </button>
+            </div>
+        </div>
+         
+    </form>
+</div>

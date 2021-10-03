@@ -1,0 +1,37 @@
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.flex-row {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 100%;
+}
+
+.flex-row > * {
+  margin: 5px 5px;
+  max-width: 98vw;
+  flex: 1 1 100px;
+  flex-basis: 100px;
+}
+
+.form-field {
+  width: 80px !important;
+}
+
+
+.body-container {
+  width: calc( 100% - 2px);
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  border: 1px dashed rgba(114, 186, 94, 0.35);
+  min-height: calc(100vh - 63px);
+  overflow: hidden;
+}

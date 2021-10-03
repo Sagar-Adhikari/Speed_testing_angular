@@ -1,0 +1,270 @@
+<div style="width: 100%;">
+    <div style="display: flex;height: 50px; padding: 20px;">
+        <span style="margin: auto;  background: linear-gradient(); ">
+
+            <strong> NTA QS Checker </strong>
+
+        </span>
+    </div>
+    <div style="max-width: 500px; margin: auto;">
+        <div style="display: flex;">
+            <app-download #download (percentCompleted)="downloadPercentCompleted($event)" style="margin: auto;">
+            </app-download>
+        </div>
+        <div style="display: flex;">
+            <app-litency (complete)="latencyJitterCompleted($event)" #latency style="width: 68%;">
+            </app-litency>
+            <app-upload #upload (percentCompleted)="uploadPercentCompleted($event)" style="margin: auto;">
+            </app-upload>
+        </div>
+        <div>
+            <app-browsing #browsing (completed)="browsingTestCompleted()">
+            </app-browsing>
+        </div>
+    </div>
+
+
+    <div *ngIf="isLoggedIn && downloadArray && uploadArray" style="display:block; text-align: center;">
+        <button mat-raised-button style="width: auto;" (click)="showDownloadDetails()">
+            {{ showDownloadDetail? ' Download Details' : 'Hide Download'}}
+        </button>
+        <button mat-raised-button style="width: auto;" (click)="showUploadDetails()">
+            {{ showUploadDetail? ' Upload Details' : 'Hide Upload'}}
+        </button>
+    </div>
+
+    <div *ngIf="!showDownloadDetail" style=" text-align: -webkit-center;height: fit-content;margin-top: 10mm;">
+        <table class="result-table">
+            <ng-container>
+                <tr>
+                    <th>Duration</th>
+                    <th>Time Passed</th>
+                    <th>Loaded</th>
+                    <th>Total Loaded</th>
+                    <th>Perventage Done</th>
+                    <th>Speed</th>
+                    <th>Average Speed</th>
+                </tr>
+            </ng-container>
+
+            <ng-container *ngFor="let item of downloadArray;let myIndex = index">
+                <tr>
+                    <th>{{downloadArray[myIndex].duration}}</th>
+                    <th>{{downloadArray[myIndex].timePassed}}</th>
+                    <th>{{downloadArray[myIndex].loaded}}</th>
+                    <th>{{downloadArray[myIndex].totalLoaded}}</th>
+                    <th>{{downloadArray[myIndex].percentDone}}</th>
+                    <th>{{downloadArray[myIndex].speed}}</th>
+                    <th>{{downloadArray[myIndex].avgSpeed}}</th>
+                </tr>
+
+            </ng-container>
+        </table>
+    </div>
+
+    <div *ngIf="!showUploadDetail" style=" text-align: -webkit-center;height: fit-content;margin-top: 10mm;">
+        <table class="result-table">
+            <ng-container>
+                <tr>
+                    <th>Duration</th>
+                    <th>Time Passed</th>
+                    <th>Loaded</th>
+                    <th>Total Loaded</th>
+                    <th>Perventage Done</th>
+                    <th>Speed</th>
+                    <th>Average Speed</th>
+                </tr>
+            </ng-container>
+
+            <ng-container *ngFor="let item of uploadArray;let myIndex = index">
+                <tr>
+                    <th>{{uploadArray[myIndex].duration}}</th>
+                    <th>{{uploadArray[myIndex].timePassed}}</th>
+                    <th>{{uploadArray[myIndex].loaded}}</th>
+                    <th>{{uploadArray[myIndex].totalLoaded}}</th>
+                    <th>{{uploadArray[myIndex].percentDone}}</th>
+                    <th>{{uploadArray[myIndex].speed}}</th>
+                    <th>{{uploadArray[myIndex].avgSpeed}}</th>
+
+                    <!-- <th style="text-align:right ; border: 1px solid black;">{{coloumnOne[myIndex]}}</th>
+              <th style="text-align: right; border: 1px solid black;">रु {{coloumnTwo[myIndex]}}</th>
+              <th style="text-align: right; border: 1px solid black;">रु {{coloumnThree[myIndex]}}</th> -->
+                </tr>
+
+            </ng-container>
+        </table>
+    </div>
+
+    <div style="display: flex; flex-direction: column; position: relative; ">
+        <div>
+            <span style="margin-left:40px;">{{currentAction}}</span>
+            <progress-bar [progress]="percent" style="width: 100%;"></progress-bar>
+        </div>
+        <div style="display: inline-flex; flex-direction: row ; justify-content: center; margin: 10px 0px;">
+            <div>
+                <span><strong>ISP:</strong></span>
+                <span style="padding-left: 10px;">{{ispInfo.isp}}</span>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: center;  margin: 10px 0px;">
+            <div>
+                <span> <strong> Server Location: </strong></span>
+                <mat-radio-group [(ngModel)]="selectedServer" [disabled]="checking || complaining ">
+                    <mat-radio-button class="server-radio-button" *ngFor="let server of servers" [value]="server">
+                        {{server}}
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content:center;  margin: 10px 0px;">
+            <div>
+                <button mat-raised-button [disabled]="complaining" (click)="startCheck()"
+                    style="width: 100px;">{{ !checking? 'Start' : 'Cancel'}}</button>
+
+            </div>
+        </div>
+
+        <div class="test-result" *ngIf="dataPing.pingNormal" [@fadeInOut]>
+            <div class="result-title">
+                <span> <strong> <u>Test Result</u></strong> </span>
+            </div>
+            <div class="parent-row">
+                <div class="child-row-result row-result-label">
+                    <strong>Latency:</strong>
+                </div>
+                <div class="child-row-result">
+                    <span>Avg. Latency:</span> <span style="margin-left: 10px;">{{dataPing.pingNormal}}ms</span>
+                </div>
+                <div class="child-row-result">
+                    <span>Jitter:</span> <span style="margin-left: 10px;">{{dataPing.jitterNormal}}ms</span>
+                </div>
+            </div>
+
+            <div class="parent-row" *ngIf="dataPing.pingDownload" [@fadeInOut] id="download">
+                <div class="child-row-result row-result-label">
+                    <strong> Download:</strong>
+                </div>
+                <div class="child-row">
+                    <div class="child-row-top">
+                        <div class="child-row-result">
+                            <span>Latency:</span> <span style="margin-left: 10px;">{{dataPing.pingDownload}}ms</span>
+                        </div>
+                        <div class="child-row-result">
+                            <span>Jitter:</span> <span style="margin-left: 10px;">{{dataPing.jitterDownload}}ms</span>
+                        </div>
+                    </div>
+                    <div class="child-row-top" *ngIf="download.speed" [@enterAnimation]>
+                        <div class="child-row-result">
+                            <span>Max. Speed:</span> <span style="margin-left: 10px;">{{download.maxSpeed}}Mbps</span>
+                        </div>
+                        <div class="child-row-result">
+                            <span>Avg. Speed:</span> <span style="margin-left: 10px;">{{download.speed}}Mbps</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div *ngIf="dataPing.pingUpload" [@enterAnimation] class="parent-row" id="upload">
+                <div class="child-row-result row-result-label">
+                    <strong> Upload:</strong>
+                </div>
+                <div class="child-row">
+                    <div class="child-row-top">
+                        <div class="child-row-result">
+                            <span>Latency:</span> <span style="margin-left: 10px;">{{dataPing.pingUpload}}ms</span>
+                        </div>
+                        <div class="child-row-result">
+                            <span>Jitter:</span> <span style="margin-left: 10px;">{{dataPing.jitterUpload}}ms</span>
+                        </div>
+                    </div>
+                    <div *ngIf="upload.speed" [@enterAnimation] class="child-row-top">
+                        <div class="child-row-result">
+                            <span>Max. Speed:</span> <span style="margin-left: 10px;">{{upload.maxSpeed}}Mbps</span>
+                        </div>
+                        <div class="child-row-result">
+                            <span>Avg. Speed:</span> <span style="margin-left: 10px;">{{upload.speed}}Mbps</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="parent-row" *ngIf="completed" [@enterAnimation] style="background-color: #efefef;">
+                <div class="child-row-result row-result-label">
+                    <strong> Browsing:</strong>
+                </div>
+                <div class="child-row-result">
+                    <span>Delay:</span> <span style="margin-left: 10px;">{{browsing.browsingDelay}}ms</span>
+                </div>
+                <div class="child-row-result">
+                </div>
+            </div>
+            <div class="parent-row" *ngIf="completed && !complainCompleted" [@fadeInOut]>
+                <div style="display: flex; font-size: 11px; padding: 10px;">
+                    {{message}}
+                </div>
+                <div style="display: flex;
+                align-self: center;">
+                    <button mat-raised-button [disabled]="complaining" (click)="doComplain()">Complain</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div *ngIf="complaining" [@fadeInOut] class="form-background">
+            <form [formGroup]="complainForm" (ngSubmit)="onSubmit(complainForm)"
+                style="margin: auto; max-width: 500px;">
+                <mat-card class="complain-card">
+                    <mat-card-header color="primary" style="background-color: #3f51b5;">
+                        <mat-card-title>Complain Form</mat-card-title>
+                        <mat-card-subtitle>Fill your details</mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content style="display: flex; flex-direction: column; padding:0px 10px;">
+                        <mat-form-field class="field-input">
+                            <mat-label>Name</mat-label>
+                            <input #name matInput type="text" formControlName="name" placeholder="Your Full Name"
+                                autocomplete="off">
+                            <mat-error>You must fill your name!</mat-error>
+                            <mat-hint>Insert Your Full Name.</mat-hint>
+                        </mat-form-field>
+
+                        <mat-form-field class="field-input">
+                            <mat-label>Email</mat-label>
+                            <input matInput type="text" formControlName="email" placeholder="Your valid email"
+                                autocomplete="off">
+                            <mat-error>You must enter valid email address!</mat-error>
+                            <mat-hint>Insert your valid email address.</mat-hint>
+
+                        </mat-form-field>
+
+                        <mat-form-field class="field-input">
+                            <mat-label>Bandwidth</mat-label>
+                            <input matInput type="number" formControlName="bandwidth" placeholder="Bandwith in Mbps"
+                                autocomplete="off">
+                            <mat-error>Your subscribed bandwidth from 5 Mbps to 100 Mbps</mat-error>
+                            <mat-hint>Your subscribed bandwidth in Mbps</mat-hint>
+                        </mat-form-field>
+
+                        <mat-form-field class="field-input">
+                            <mat-label>Mobile No</mat-label>
+                            <input matInput type="text" formControlName="mobileNo"
+                                placeholder="Please Type Your Mobile No" autocomplete="off">
+                            <mat-error>Enter your valid mobile no</mat-error>
+                            <mat-hint>Insert your valid mobile no</mat-hint>
+                        </mat-form-field>
+
+                    </mat-card-content>
+                    <mat-card-actions
+                        style="background-color: whitesmoke; margin-left: 0px; margin-right:0px; padding-bottom: 10px; display: flex; justify-content: center;">
+                        <button mat-raised-button [disabled]="!complainForm.valid">Submit</button>
+                    </mat-card-actions>
+                </mat-card>
+            </form>
+        </div>
+        <div *ngIf="complainCompleted" style="display: flex;" [@fadeInOut]>
+            <h1 style="margin: auto;">Thanks for feedback.</h1>
+        </div>
+    </div>
+</div>

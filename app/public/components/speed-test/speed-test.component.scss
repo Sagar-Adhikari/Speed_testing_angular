@@ -1,0 +1,90 @@
+.example-radio-group {
+  display: flex;
+  flex-direction: row;
+  margin: 15px 0;
+}
+
+.server-radio-button {
+  margin: 15px;
+}
+
+.child-row-result {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  flex-direction: row;
+  font-size: 10px;
+  padding: 5px 10px;
+  visibility: visible;
+  opacity: 1;
+  transition-delay: 0s;
+}
+
+.child-row-top {
+  display: flex;
+}
+
+.row-result-label {
+  max-width: 60px;
+  align-self: center;
+}
+
+.parent-row {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.child-row {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  flex-direction: column;
+  font-size: 10px;
+  //   padding: 10px;
+}
+.test-result {
+  border: solid 1px green;
+  padding: 2px;
+  display: flex;
+  flex-direction: column;
+  margin: 5px 10px;
+}
+
+.result-title {
+  background-color: antiquewhite;
+  display: flex;
+  justify-content: center;
+  padding: 7px;
+}
+
+#download {
+  background-color: #efefef;
+}
+
+.field-input {
+  height: 80px;
+}
+
+.complain-card {
+  padding: 0px 0px 10px 0px;
+}
+
+.form-background {
+  background: linear-gradient(0deg, #403c3c, transparent);
+}
+
+
+.result-table{
+  width: 100%;
+  text-align: right; 
+  border: 1px solid black;
+  font-size: 10px;
+
+}
+@media (max-width: 600px) {
+  .test-result {
+    margin: 5px 0px;
+  }
+}

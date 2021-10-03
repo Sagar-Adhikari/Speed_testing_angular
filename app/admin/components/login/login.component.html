@@ -1,0 +1,48 @@
+<div class="body-container">
+    <form #formData="ngForm" class="login-form" novalidate [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm)">
+        <div class="avatar-container">
+            <button type="button" mat-icon-button mat-cart-avatar class="login-avatar pull-right"
+                [ngStyle]="{'background-image':'url('+ currentURL + ')'}"></button>
+                <h2>Login</h2>
+        </div>
+
+        <div class="flex-row">
+            <mat-form-field class="item">
+                <input #userName 
+                matInput
+                placeholder="User Email"
+                autocomplete="off"
+                formControlName = "email"/>
+                <mat-icon matSuffix>perm_identity</mat-icon>
+               <mat-error>Email is not in correct format.</mat-error>
+               <mat-hint>Enter your email address</mat-hint>
+            </mat-form-field>          
+        </div>
+        <div class="flex-row">
+            <mat-form-field class="item">
+                <input   
+                matInput                
+                placeholder="Password"
+                autocomplete="off"
+                formControlName = "password"
+                [type]="hidePassword ? 'password' : 'text'"
+                (blur)="hidePassword= true"
+                
+                />
+                <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{
+                hidePassword? 'visibility' : 'visibility_off'    
+                }}</mat-icon>
+                <mat-error>Password length is not valid (6 to 15).</mat-error>
+                <mat-hint>Enter your password.</mat-hint>
+            </mat-form-field>
+        </div>
+        <div style="display: flex;">
+            <div class="item">
+                <button mat-raised-button color="primary" style="width: 100px;">
+                Login
+                </button>
+            </div>
+        </div>
+        
+    </form>
+</div>

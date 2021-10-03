@@ -1,0 +1,56 @@
+<meta http-equiv="cache-control" content="no-cache, must-revalidate, post-check=0, pre-check=0">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="pragma" content="no-cache">
+
+<mat-toolbar color="primary" class="app-toolbar">
+  <div style="display: flex; flex-direction: row; width: 100%;">
+
+    <img class="logo" [src]="'assets/nta-logo.png'" alt="logo" (click)="isLoggedIn? drawer.toggle(): undefined" />
+
+    <div class="toolbar-row" *ngIf="!smallScreen">
+      <span style="font-size: 22px;">नेपाल दूरसञ्चार प्राधिकरण</span>
+      <span style="font-size: 15px;">Nepal Telecommunications Authority</span>
+    </div>
+    <div class="toolbar-row">{{pageTitle}}</div>
+    <div class="toolbar-row toolbar-user" *ngIf="!smallScreen">
+      <button mat-button *ngIf="!isLoggedIn" (click)="login()">Login</button>
+      <button mat-button [matMenuTriggerFor]="menu"  *ngIf="isLoggedIn">{{email}}</button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="changePassword()">Change Password</button>
+        <button mat-menu-item (click)="logout()" >Logout</button>
+      </mat-menu>
+    </div>
+  </div>
+</mat-toolbar>
+
+
+<mat-sidenav-container fullScreen class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewPort="true" [attr.role]="smallScreen ? 'dialog' : 'navigation'"
+    [mode]="smallScreen? 'over': 'side'" [opened]="isLoggedIn">
+    <mat-nav-list>
+      <a *ngIf="roleId==1"mat-list-item routerLink="/admin/users">User List</a> 
+      <a *ngIf="roleId==1" mat-list-item routerLink="/admin/clear">Clear Records</a> 
+    </mat-nav-list>
+    <mat-divider ></mat-divider>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/admin/change-password">Change Password</a>
+      <a  mat-list-item routerLink="/admin/test-count">Test Count</a>
+      <a  mat-list-item routerLink="/admin/chart">Speed Charts</a>      
+      <a  mat-list-item routerLink="/admin/table">Test List</a>
+    </mat-nav-list>
+    <mat-divider></mat-divider>
+    <mat-nav-list>
+      <a  mat-list-item routerLink="/speed-test">Speed Test</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content class="sidenav-content">
+    <router-outlet></router-outlet>
+    <div *ngIf="allowFooter" class="app-footer">
+      <span>Developed By</span>
+      <span>Nirekha Dot Com Pvt. Ltd</span>
+      <span style="font-size: 10px;">Tel. No: 977-01-5907025</span>
+      <span style="font-size: 10px;">url: www.nirekha.com</span>
+      <span style="font-size: 10px;">email: teamnirekha@gmail.com</span>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

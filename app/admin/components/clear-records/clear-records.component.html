@@ -1,0 +1,47 @@
+<div class="body-container">
+  <div style="display: flex;flex-direction: column;margin: auto;">
+       <mat-form-field>
+        <input matInput #tillDt [matDatepicker]="dateTill" placeholder="From date" [(ngModel)]="tillDate" required
+            autocomplete="off">
+        <mat-datepicker-toggle matSuffix [for]="dateTill"></mat-datepicker-toggle>
+        <mat-datepicker #dateTill></mat-datepicker>
+    </mat-form-field>
+    <div style="display: flex;">
+        <div class="item">
+            <button mat-raised-button color="primary" style="width: 100px;"(click)="clearRecords()">
+            Clear
+            </button>
+        </div>
+    </div>
+  </div>
+   
+    <!-- <form #formData="ngForm" class="change-pw-form" novalidate [formGroup]="clearForm" (ngSubmit)="onSubmit(clearForm)">
+       <div class="flex-row">
+        <mat-form-field>
+            <input
+              matInput
+              [matDatepicker]="date"
+              placeholder=" Date"
+              formControlName="date"/>
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="date"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #fromDate startView="multi-year"></mat-datepicker>
+          </mat-form-field>
+              
+        </div>
+        <div style="display: flex;">
+            <div class="item">
+                <button mat-raised-button color="primary" style="width: 100px;">
+                Save
+                </button>
+            </div>
+        </div>
+         
+    </form> -->
+</div>
+
+
+
+    

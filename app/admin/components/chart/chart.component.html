@@ -1,0 +1,94 @@
+<div class="body-container">
+    <div class="flex-row">
+        <mat-form-field class="form-field">
+            <mat-label>Report Type</mat-label>
+            <mat-select [(value)]="selectedReport" required>
+                <mat-option (onSelectionChange)="itemChange($event,'report')" *ngFor="let report of reportList"
+                    [value]="report.report">
+                    {{report.report}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+            <mat-label>Site</mat-label>
+            <mat-select [(value)]="selectedSite" required>
+                <mat-option (onSelectionChange)="itemChange($event,'site')" *ngFor="let site of siteList"
+                    [value]="site.location">
+                    {{site.location}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+            <mat-label>ISP</mat-label>
+            <mat-select [(value)]="selectedISP" required>
+                <mat-option (onSelectionChange)="itemChange($event,'isp')" *ngFor="let isp of ispList"
+                    [value]="isp.internetServiceProvider">
+                    {{isp.internetServiceProvider}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+            <input matInput #fromDt [matDatepicker]="dateFrom" placeholder="From date" [(ngModel)]="fromDate" required
+                (dateChange)="dateChange(fromDt.value,'From')" autocomplete="off">
+            <mat-datepicker-toggle matSuffix [for]="dateFrom"></mat-datepicker-toggle>
+            <mat-datepicker #dateFrom></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+            <input matInput #toDt [matDatepicker]="dateTo" placeholder="To date" [(ngModel)]="toDate" required
+                (dateChange)="dateChange(toDt.value,'To')" autocomplete="off">
+            <mat-datepicker-toggle matSuffix [for]="dateTo"></mat-datepicker-toggle>
+            <mat-datepicker #dateTo></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+            <mat-label>Location</mat-label>
+            <mat-select [(value)]="selectedLocation">
+                <mat-option (onSelectionChange)="itemChange($event,'location')" *ngFor="let location of locationList"
+                    [value]="location.location">
+                    {{location.location}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+            <span matSuffix>Mbps &nbsp;</span>
+            <input type="number" matInput placeholder="Bandwidth" autocomplete="off" [(ngModel)]="bandwidth"
+                (change)="bandwidthChanged($event)">
+        </mat-form-field>
+    </div>
+
+    <div *ngIf="loading" class="flex-row">
+        <mat-progress-bar class="example-margin" color="primary" mode="query">
+        </mat-progress-bar>
+    </div>
+
+    <div class="flex-row">
+        <canvas baseChart height="120" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+            [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins">
+        </canvas>
+    </div>
+
+    <div class="flex-row">
+        <div style="display: flex; height: 50px; margin: 0px;">
+            <label style="margin: auto;">From Row No:</label>
+            <label style="margin: auto;">{{startRowNo}}</label>
+            <mat-slider class="flex-row" #start style="width: 50%;" [max]="count" [min]="0" [step]="1" [thumbLabel]="true"
+                [tickInterval]="false" [(ngModel)]="startRowNo" [vertical]="false"
+                (change)="sliderOnChange(start.value, 'start')">
+            </mat-slider>
+        </div>
+        <div style="display: flex; height: 50px; margin: 0px;">
+            <label style="margin: auto;">No of records:</label>
+            <label style="margin: auto;">{{limit}}</label>
+            <mat-slider #rowlimit style="width: 50%;" [max]="count - startRowNo" [min]="0" [step]="1" [thumbLabel]="true"
+                [tickInterval]="false" [(ngModel)]="limit" [vertical]="false"
+                (change)="sliderOnChange(rowlimit.value, 'limit')">
+            </mat-slider>
+        </div>
+
+    </div>
+</div>
